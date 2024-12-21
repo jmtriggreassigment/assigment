@@ -72,16 +72,16 @@ export class WidgetsManager {
         const initPromise = new Promise<void>((resolve, reject) => {
             this.widgetsDestroyManager.subscribe(target, () => reject(new WidgetDestroyedError(widgetName, target)));
 
-            widget._init(() => resolve(), (e) => { reject(e) });
+            widget._init(() => resolve(), (e) => reject(e));
         });
 
         await initPromise;
 
-        if (widget.beforeSubTreeRender) widget.beforeSubTreeRender();
+        widget._beforeSubTreeRender();
 
         await this.renderChildren(target, widget, options);
 
-        if (widget.afterInit) widget.afterInit();
+        widget._afterInit();
     }
 
     private async renderChildren(target: Element, context: any, options: RenderingOptions) {

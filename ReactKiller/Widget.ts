@@ -27,6 +27,18 @@ export abstract class ReactKillerWidget {
         });
     }
 
+    public _beforeSubTreeRender() {
+        if (this.state === 'destroyed') return
+        this.state = 'subTreeRendering'
+        this.beforeSubTreeRender?.();
+    }
+
+    _afterInit() {
+        if (this.state === 'destroyed') return
+        this.state = 'initialized'
+        this.afterInit?.();
+    }
+
     public _destroy() {
         if (this.state === 'destroyed') return
         this.state = 'destroyed'
